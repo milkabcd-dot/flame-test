@@ -74,9 +74,9 @@ R[1].tasks.push(
 {t:'mcq',v:'t98-M-fEo0c',q:'בסרטון נבדקו כמה יסודות. איזה יסוד נותן את הלהבה בצבע ירוק בהיר?',o:['בריום Barium (Ba)','נתרן Sodium (Na)','סידן Calcium (Ca)','ליתיום Lithium (Li)'],a:0,why:'ירוק בהיר הוא צבע אופייני לבריום, Barium (Ba).',h:'ירוק בהיר, והסמל Ba.'});
 R[1].tasks.shift();
 R[1].tasks[0]={t:'tap',q:'התאימו לכל סמל כימי את שמו בעברית ואת שמו באנגלית:',why:'כל סמל כימי מתאים ליסוד אחד, עם שם בעברית ושם באנגלית. שימו לב: הסמל של נתרן הוא Na ולא So, כי הוא מגיע מהשם הלטיני Natrium. גם הסמל K של אשלגן מגיע מהשם הלטיני Kalium.',h:'התחילו מהקלים: Cu נחושת Copper, Ba בריום Barium, Li ליתיום Lithium.'};
-let S;try{S=JSON.parse(localStorage.getItem('flame2'))}catch(e){}
+let S;try{S=JSON.parse(localStorage.getItem('flame3'))}catch(e){}
 S=S||{scr:'intro',t:[0,0,0,0],sc:0,name:'',won:0,at:0};
-const save=()=>{try{localStorage.setItem('flame2',JSON.stringify(S))}catch(e){}};
+const save=()=>{try{localStorage.setItem('flame3',JSON.stringify(S))}catch(e){}};
 let LIT={},SIM=shuf(N),FB=null,HINT=0,SEQ=[],ORD=null,WR=0;
 function vid(){return '<div style="text-align:center;margin:10px 0"><h3>🎬 סרטון: מבחן להבה אמיתי</h3><iframe src="https://www.youtube-nocookie.com/embed/gQDNetE8Kpo" title="מבחן להבה" style="width:100%;max-width:320px;aspect-ratio:9/16;border:0;border-radius:12px" allowfullscreen loading="lazy"></iframe><p><small>בסרטון: סטרונציום, נתרן, ליתיום, אשלגן ונחושת. אם הסרטון לא נטען: <a target="_blank" rel="noopener" href="https://www.youtube.com/shorts/gQDNetE8Kpo">פתיחה ביוטיוב</a></small></p></div>'}
 function vv(id,t){return '<div class="card" style="text-align:center"><h3>🎬 '+t+'</h3><iframe src="https://www.youtube-nocookie.com/embed/'+id+'" title="'+t+'" style="width:100%;max-width:320px;aspect-ratio:9/16;border:0;border-radius:12px" allowfullscreen loading="lazy"></iframe><p><small>אם הסרטון לא נטען: <a target="_blank" rel="noopener" href="https://www.youtube.com/shorts/'+id+'">פתיחה ביוטיוב</a></small></p></div>'}
