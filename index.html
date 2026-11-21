@@ -73,6 +73,7 @@ R[1].tasks.push(
 {t:'mcq',v:'srVQvZosyXk',q:'מיהו היסוד שנבדק בסרטון? הלהבה אדומה.',o:['נתרן Sodium (Na)','בריום Barium (Ba)','סטרונציום Strontium (Sr)','נחושת Copper (Cu)'],a:2,why:'להבה אדומה עזה היא האופיינית לסטרונציום, Strontium (Sr). זכרו שליתיום וסידן דומים, ולכן זהירות.',h:'אדום, והסמל Sr.'},
 {t:'mcq',v:'t98-M-fEo0c',q:'בסרטון נבדקו כמה יסודות. איזה יסוד נותן את הלהבה בצבע ירוק בהיר?',o:['בריום Barium (Ba)','נתרן Sodium (Na)','סידן Calcium (Ca)','ליתיום Lithium (Li)'],a:0,why:'ירוק בהיר הוא צבע אופייני לבריום, Barium (Ba).',h:'ירוק בהיר, והסמל Ba.'});
 R[1].tasks.shift();
+R[1].tasks[0]={t:'tap',q:'התאימו לכל סמל כימי את שמו בעברית ואת שמו באנגלית:',why:'כל סמל כימי מתאים ליסוד אחד, עם שם בעברית ושם באנגלית. שימו לב: הסמל של נתרן הוא Na ולא So, כי הוא מגיע מהשם הלטיני Natrium. גם הסמל K של אשלגן מגיע מהשם הלטיני Kalium.',h:'התחילו מהקלים: Cu נחושת Copper, Ba בריום Barium, Li ליתיום Lithium.'};
 let S;try{S=JSON.parse(localStorage.getItem('flame2'))}catch(e){}
 S=S||{scr:'intro',t:[0,0,0,0],sc:0,name:'',won:0,at:0};
 const save=()=>{try{localStorage.setItem('flame2',JSON.stringify(S))}catch(e){}};
@@ -90,6 +91,14 @@ function intro(){return '<div class="card" style="text-align:center"><div style=
 function atom(){const st=S.at||0;const e=(st==2)?'<circle cx="196" cy="54" r="7" fill="#2dd4bf"/>':'<circle cx="180" cy="100" r="7" fill="#2dd4bf"/>';
 const cap=['אטום במצב יציב: האלקטרון ברמת אנרגיה נמוכה','האטום קולט אנרגיה (חום הלהבה)','האלקטרון עובר לרמת אנרגיה גבוהה יותר','האלקטרון חוזר לרמה נמוכה יותר','נפלט פוטון אור, וצבעו תלוי בהפרש האנרגיה'][st];
 return '<div class="card"><svg viewBox="0 0 300 190" width="100%"><circle cx="150" cy="100" r="30" fill="none" stroke="#8b5cf6" stroke-dasharray="4"/><circle cx="150" cy="100" r="65" fill="none" stroke="#8b5cf6" stroke-dasharray="4"/><circle cx="150" cy="100" r="10" fill="#f5c542"/>'+(st==3||st==4?'<circle cx="180" cy="100" r="7" fill="#2dd4bf"/>':e)+(st==1?'<path d="M10 40 l25 12 -15 8 30 14" stroke="#ff6a1f" stroke-width="4" fill="none"/>':'')+(st==4?'<path d="M135 150 q8 -14 16 0 t16 0 t16 0" stroke="#ffd400" stroke-width="3" fill="none"/><text x="130" y="176" fill="#ffd400" font-size="12">פוטון</text>':'')+'</svg><p><b>'+cap+'</b></p><button onclick="S.at=Math.max(0,(S.at||0)-1);render()">▶ קודם</button> <button onclick="S.at=Math.min(4,(S.at||0)+1);render()">הבא ◀</button><p><small>זהו מודל המחשה: המסלולים המקווקווים מייצגים רמות אנרגיה, ולא מסלולים פיזיים של כדורים.</small></p></div>'}
+let TP={sel:null,v:{}};const TPH=shuf(N.map(x=>'h:'+x[0])),TPE=shuf(N.map(x=>'e:'+x[0])),TPR=shuf(N);
+const tpT=id=>{const x=N.find(n=>n[0]===id.slice(2));return id[0]=='h'?x[1]:EN[x[0]]};
+const tpC=id=>{TP.sel=TP.sel===id?null:id;render()};
+const tpS=sl=>{if(TP.v[sl]){delete TP.v[sl]}else if(TP.sel&&TP.sel[0]===sl.split('-')[1]){TP.v[sl]=TP.sel;TP.sel=null}render()};
+function tapUI(){const used=Object.values(TP.v);
+const chip=id=>'<button style="'+(TP.sel===id?'background:var(--pur)':'')+'" onclick="tpC(\''+id+'\')">'+tpT(id)+'</button> ';
+return '<p><small>לחצו על שם כדי לבחור אותו, ואז על המשבצת שלו ליד הסמל. לחיצה על משבצת מלאה מחזירה את השם.</small></p><div>'+TPH.filter(i=>!used.includes(i)).map(chip).join('')+'</div><div dir="ltr" style="margin-top:6px">'+TPE.filter(i=>!used.includes(i)).map(chip).join('')+'</div><div style="overflow-x:auto"><table style="margin-top:10px"><tr><th>סמל</th><th>עברית</th><th>English</th></tr>'+TPR.map(x=>'<tr><td><b class="dig">'+x[0]+'</b></td>'+['h','e'].map(k=>'<td><button class="opt" style="min-width:90px" onclick="tpS(\''+x[0]+'-'+k+'\')">'+(TP.v[x[0]+'-'+k]?tpT(TP.v[x[0]+'-'+k]):'—')+'</button></td>').join('')+'</tr>').join('')+'</table></div><button class="big" onclick="chkT()">בדיקה</button>'}
+const chkT=()=>N.every(x=>TP.v[x[0]+'-h']==='h:'+x[0]&&TP.v[x[0]+'-e']==='e:'+x[0])?okf():badf();
 let MO={};
 function room(i){const r=R[i];
 let top='<div class="card"><h2>'+r.ic+' חדר '+(i+1)+': '+r.n+'</h2><p>'+r.story+'</p>';
@@ -103,11 +112,12 @@ else{const t=r.tasks[S.t[i]];tk='<div class="card"><small>משימה '+(S.t[i]+1
 if(t.t=='mcq')tk+=t.o.map((o,k)=>'<button class="opt" onclick="mcq('+k+')">'+o+'</button>').join('');
 if(t.t=='order'){ORD=ORD||shuf(t.it.map((_,k)=>k));tk+='<ol>'+SEQ.map(k=>'<li>'+t.it[k]+'</li>').join('')+'</ol>'+ORD.filter(k=>!SEQ.includes(k)).map(k=>'<button class="opt" onclick="SEQ.push('+k+');render()">'+t.it[k]+'</button>').join('')+'<button onclick="SEQ=[];render()">איפוס</button> <button class="big" onclick="chkOrd()">בדיקה</button>'}
 if(t.t=='match'){const kk=i+'-'+S.t[i],op=MO[kk]=MO[kk]||shuf([...new Set(t.p.map(p=>p[1]))]);tk+=t.p.map((p,k)=>'<div class="row"><div style="flex:1">'+p[0]+'</div><select id="m'+k+'"><option value="">בחרו...</option>'+op.map(o=>'<option>'+o+'</option>').join('')+'</select></div>').join('')+'<button class="big" onclick="chkM()">בדיקה</button>'}
+if(t.t=='tap')tk+=tapUI();
 tk+='</div>';
 hn=HINT?'<div class="fb" style="background:#3a2f0f;border:1px solid var(--gold)">💡 '+t.h+'</div>':'<button onclick="HINT=1;S.sc=Math.max(0,S.sc-2);save();render()">💡 רמז (−2)</button>'}
 return [['top',top],['g1',r.vid?gal(GAL1,'a','סרטוני בדיקות אמיתיות'):''],['sim',(r.vid||(i==1&&HINT))?sim():''],['tbl',i==1?tbl():''],['atom',r.atom?atom():''],['gw',r.atom?gal([['s0K0i3-DtJo','למה לכל יסוד צבע אחר?']],'w','סרטון: למה לכל יסוד צבע אחר'):''],['gf',r.file?gal(GAL4,'f','בדיקה אמיתית נוספת'):''],['fb',FB?'<div class="fb '+(FB.ok?'ok':'no')+'">'+FB.t+'</div>':''],['tk',tk],['hn',hn]]}
 const cur=()=>R[S.scr].tasks[S.t[S.scr]];
-function okf(){FB={ok:1,t:'✔ נכון! '+cur().why};S.sc+=10;S.t[S.scr]++;HINT=0;SEQ=[];ORD=null;save();render()}
+function okf(){FB={ok:1,t:'✔ נכון! '+cur().why};S.sc+=10;S.t[S.scr]++;HINT=0;SEQ=[];ORD=null;TP={sel:null,v:{}};save();render()}
 function badf(){FB={ok:0,t:'✖ עדיין לא מדויק. נסו שוב, או השתמשו ברמז.'};S.sc=Math.max(0,S.sc-3);save();render()}
 const mcq=k=>k===cur().a?okf():badf();
 const chkOrd=()=>JSON.stringify(SEQ)=='[0,1,2,3]'?okf():(SEQ=[],badf());
